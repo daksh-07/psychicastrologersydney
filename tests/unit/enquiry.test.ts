@@ -25,7 +25,8 @@ test("phone formats", () => {
 });
 
 test("topic allowlist", () => {
-  assert.ok(isTopicSlug("career-and-business"));
+  assert.ok(isTopicSlug("career-and-education"));
+  assert.ok(isTopicSlug("black-magic-concerns"));
   assert.ok(!isTopicSlug("black-magic"));
   assert.ok(!isTopicSlug("<script>"));
   assert.ok(validateEnquiry({ ...ok, topic: "court-cases" }).topic);

@@ -5,12 +5,21 @@
  * The number below is the one published most consistently on the current site
  * (homepage enquiry block, sticky actions, service links and footer). A second
  * number appears in the legacy header and is deliberately NOT used here.
- * Email is omitted until the published addresses are reconciled.
+ * Email is omitted: the original site shows four different addresses.
  */
 export const business = {
   name: "Pandit Thulasidas",
   role: "Vedic astrologer and spiritual advisor",
   locality: "Sydney, NSW",
+  /** As published on the original website. Confirm visiting arrangements before launch. */
+  address: {
+    street: "9 Addlestone Rd",
+    suburb: "Merrylands NSW 2160",
+    country: "Australia",
+    mapHref: "https://www.google.com/maps/search/?api=1&query=9%20Addlestone%20Rd%2C%20Merrylands%20NSW%202160",
+  },
+  /** Stated on the original website; awaiting owner confirmation. */
+  experienceClaim: "more than 25 years of experience in Vedic astrology and spiritual guidance",
   phone: {
     /** E.164 digits used to build tel: and wa.me destinations. */
     e164: "+61426562158",

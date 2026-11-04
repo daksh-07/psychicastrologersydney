@@ -1,32 +1,38 @@
-// Renders src/app/opengraph-image.png (1200×630) from the live plate SVG and local fonts.
-// Usage: BASE_URL=http://localhost:3100 node scripts/render-og.mjs
+// Renders src/app/opengraph-image.png (1200×630) from local fonts and the hero painting.
+// Usage: node scripts/render-og.mjs
 import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 const require = createRequire(import.meta.url);
 const { chromium } = require("playwright");
-const BASE = process.env.BASE_URL ?? "http://localhost:3100";
-const font = (f) => `data:font/woff2;base64,${readFileSync(new URL(`../src/fonts/${f}`, import.meta.url)).toString("base64")}`;
+const f = (p) => readFileSync(new URL(`../${p}`, import.meta.url)).toString("base64");
+const font = (n) => `data:font/woff2;base64,${f(`src/fonts/${n}`)}`;
+const art = `data:image/webp;base64,${f("public/art/krishna-fluting-800.webp")}`;
 
 const b = await chromium.launch();
 const p = await b.newPage({ viewport: { width: 1200, height: 630 } });
-await p.goto(BASE + "/", { waitUntil: "networkidle" });
-const svg = await p.evaluate(() => {
-  const s = document.querySelector("section figure svg").cloneNode(true);
-  s.removeAttribute("class");
-  return s.outerHTML;
-});
 await p.setContent(`<!doctype html><html><head><style>
-@font-face{font-family:IS;src:url(${font("instrument-serif-latin-400-normal.woff2")})}
-@font-face{font-family:MR;font-weight:700;src:url(${font("manrope-latin-700-normal.woff2")})}
-@font-face{font-family:MR;font-weight:500;src:url(${font("manrope-latin-500-normal.woff2")})}
-*{margin:0;box-sizing:border-box}body{width:1200px;height:630px;background:#171813;color:#F4EFE4;display:grid;grid-template-columns:1fr 520px;align-items:center;padding:0 64px 0 80px;overflow:hidden}
-.e{font:700 15px MR;letter-spacing:.14em;text-transform:uppercase;color:#C3A46C}
-h1{font:400 104px/0.95 IS;letter-spacing:-.035em;margin-top:28px}
-p{font:500 20px/1.5 MR;color:#D1C8B6;margin-top:28px;max-width:30ch}
-svg{width:520px;height:520px}
-.c{position:absolute;left:80px;bottom:40px;font:700 12px MR;letter-spacing:.14em;color:#D1C8B6}
-</style></head><body><div><div class="e">Pandit Thulasidas · Sydney</div><h1>Vedic astrology, one to one.</h1><p>Horoscope, palmistry and spiritual consultations.</p></div>${svg}<div class="c">FIG. 01 / CELESTIAL STUDY</div></body></html>`);
+@font-face{font-family:C;font-weight:300;src:url(${font("cormorant-garamond-latin-300-normal.woff2")})}
+@font-face{font-family:C;font-style:italic;font-weight:400;src:url(${font("cormorant-garamond-latin-400-italic.woff2")})}
+@font-face{font-family:M;font-weight:700;src:url(${font("manrope-latin-700-normal.woff2")})}
+@font-face{font-family:M;font-weight:600;src:url(${font("manrope-latin-600-normal.woff2")})}
+@font-face{font-family:T;src:url(${font("tiro-devanagari-sanskrit-subset.woff2")})}
+*{margin:0;box-sizing:border-box}
+body{width:1200px;height:630px;background:#f5eee2;color:#1b1713;display:grid;grid-template-columns:1fr 380px;gap:56px;align-items:center;padding:0 72px 0 80px;overflow:hidden;position:relative}
+.e{font:700 14px M;letter-spacing:.18em;text-transform:uppercase;display:flex;gap:14px;align-items:center}
+.e b{font:400 22px T;letter-spacing:0;color:#8a4a12}
+h1{font:300 112px/0.86 C;letter-spacing:-.035em;margin-top:26px}
+h1 em{font:italic 400 112px/0.86 C;color:#8a4a12}
+p{font:600 20px/1.45 M;color:#4a4037;margin-top:26px;max-width:32ch}
+.a{height:520px;border-radius:999px 999px 6px 6px;overflow:hidden}
+.a img{width:100%;height:100%;object-fit:cover}
+.c{position:absolute;left:80px;bottom:34px;font:600 12px M;letter-spacing:.06em;color:#4a4037}
+</style></head><body>
+<div><div class="e"><b>ज्योतिष</b>Pandit Thulasidas · Sydney</div><h1>Ancient sky, <em>personal</em> counsel.</h1><p>Vedic astrology, palmistry, psychic &amp; spiritual guidance.</p></div>
+<div class="a"><img src="${art}"></div>
+<div class="c">Krishna Fluting, Rajasthan c. 1675–1700 · The Cleveland Museum of Art · CC0</div>
+</body></html>`);
 await p.evaluate(() => document.fonts.ready);
-await p.screenshot({ path: new URL("../src/app/opengraph-image.png", import.meta.url).pathname });
+await p.waitForTimeout(300);
+for (const n of ["opengraph-image.png", "twitter-image.png"]) await p.screenshot({ path: new URL(`../src/app/${n}`, import.meta.url).pathname });
 await b.close();
-console.log("wrote src/app/opengraph-image.png");
+console.log("wrote OG + Twitter images");

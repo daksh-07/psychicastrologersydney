@@ -1,5 +1,7 @@
 "use client";
 
+/* Re-styled for The Sacred Atelier; logic unchanged from the reviewed composer. */
+
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { business, telHref } from "@/config/business";
 import { isTopicSlug, topicLabel, type TopicSlug, type topics as TopicList } from "@/content/topics";
@@ -97,19 +99,19 @@ export function EnquiryComposer({ topics }: { topics: typeof TopicList }) {
   if (step === "review") {
     const topic = values.topic as TopicSlug;
     return (
-      <div className="border border-rule bg-paper p-5 md:p-8" data-testid="review">
-        <p className="eyebrow brass">Step 2 of 2 · Review</p>
-        <h3 ref={reviewRef} tabIndex={-1} className="heading-3 mt-3 outline-none">Review your WhatsApp message</h3>
+      <div className="rounded-[8px] border border-[var(--color-rule)] bg-[var(--color-paper)] p-5 shadow-[0_30px_60px_-40px_rgba(27,23,19,0.35)] md:p-10" data-testid="review">
+        <p className="eyebrow accent">Step 2 of 2 · Review</p>
+        <h3 ref={reviewRef} tabIndex={-1} className="t-h3 mt-3 outline-none">Review your WhatsApp message</h3>
         <p className="muted mt-4 measure">
           This is the exact text that will appear in WhatsApp. Nothing has been sent.
         </p>
         <pre
-          className="mt-6 whitespace-pre-wrap break-words border-l-2 border-brass-dark bg-ivory p-4 font-sans text-[0.9375rem] leading-relaxed"
+          className="mt-6 whitespace-pre-wrap break-words border-l-2 border-[var(--color-saffron-deep)] bg-[var(--color-ivory)] p-4 font-sans text-[0.9375rem] leading-relaxed"
           data-testid="draft"
         >
           {draft}
         </pre>
-        <div className="mt-6 border-t border-rule pt-5 text-[0.9375rem]">
+        <div className="mt-6 border-t border-[var(--color-rule)] pt-5 text-[0.9375rem]">
           <h4 className="font-semibold">What is shared when you open WhatsApp</h4>
           <p className="muted mt-2 measure">
             Your name, contact number, the topic “{topicLabel(topic)}”
@@ -119,12 +121,12 @@ export function EnquiryComposer({ topics }: { topics: typeof TopicList }) {
           </p>
         </div>
         <div className="mt-8 flex flex-col gap-3 min-[480px]:flex-row min-[480px]:flex-wrap">
-          <button type="button" className="btn btn-dark" onClick={openWhatsApp}>
-            Open WhatsApp <span className="arrow" aria-hidden="true">→</span>
+          <button type="button" className="btn btn-solid" onClick={openWhatsApp}>
+            Open WhatsApp <span className="arr" aria-hidden="true">→</span>
           </button>
           <button
             type="button"
-            className="btn btn-outline"
+            className="btn btn-line"
             onClick={() => {
               focusAfterEdit.current = true;
               setStep("edit");
@@ -141,9 +143,9 @@ export function EnquiryComposer({ topics }: { topics: typeof TopicList }) {
   }
 
   return (
-    <form noValidate onSubmit={onSubmit} aria-labelledby={`${uid}-title`} className="border border-rule bg-paper p-5 md:p-8">
-      <p className="eyebrow brass">Step 1 of 2 · Details</p>
-      <h3 id={`${uid}-title`} className="heading-3 mt-3">Your enquiry</h3>
+    <form noValidate onSubmit={onSubmit} aria-labelledby={`${uid}-title`} className="rounded-[8px] border border-[var(--color-rule)] bg-[var(--color-paper)] p-5 shadow-[0_30px_60px_-40px_rgba(27,23,19,0.35)] md:p-10">
+      <p className="eyebrow accent">Step 1 of 2 · Details</p>
+      <h3 id={`${uid}-title`} className="t-h3 mt-3">Your enquiry</h3>
       <p className="muted mt-3 text-[0.9375rem]">
         All fields are required unless marked optional. Please don’t include birth details, photos, payment
         information or anything confidential.
@@ -155,7 +157,7 @@ export function EnquiryComposer({ topics }: { topics: typeof TopicList }) {
           tabIndex={-1}
           role="alert"
           aria-labelledby={`${uid}-summary`}
-          className="mt-6 border-2 border-[#8a2417] bg-ivory p-4 outline-none focus-visible:outline-2 focus-visible:outline-[#8a2417]"
+          className="mt-6 border-2 border-[#8a2417] bg-[var(--color-ivory)] p-4 outline-none focus-visible:outline-2 focus-visible:outline-[#8a2417]"
           data-testid="error-summary"
         >
           <h4 id={`${uid}-summary`} className="font-semibold">Please check {errorIds.length === 1 ? "one field" : `${errorIds.length} fields`}</h4>
@@ -233,7 +235,7 @@ export function EnquiryComposer({ topics }: { topics: typeof TopicList }) {
 
         <div className="field">
           <label htmlFor={id("message")}>
-            {LABELS.message} <span className="font-normal text-muted">(optional)</span>
+            {LABELS.message} <span className="font-normal opacity-70">(optional)</span>
           </label>
           <span className="hint" id={`${id("message")}-hint`}>One or two sentences about your question is plenty.</span>
           <textarea
@@ -251,10 +253,10 @@ export function EnquiryComposer({ topics }: { topics: typeof TopicList }) {
         </div>
 
         <div className="flex flex-col gap-3 min-[480px]:flex-row min-[480px]:items-center">
-          <button ref={reviewButtonRef} type="submit" className="btn btn-dark">
-            Review WhatsApp message <span className="arrow" aria-hidden="true">→</span>
+          <button ref={reviewButtonRef} type="submit" className="btn btn-solid">
+            Review WhatsApp message <span className="arr" aria-hidden="true">→</span>
           </button>
-          <a href={telHref} className="text-link justify-center min-[480px]:ml-2">Or call {business.phone.display}</a>
+          <a href={telHref} className="ulink justify-center min-[480px]:ml-2">Or call {business.phone.display}</a>
         </div>
       </fieldset>
     </form>

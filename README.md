@@ -1,16 +1,36 @@
-# The Celestial Almanac — Pandit Thulasidas (speculative preview)
+# The Sacred Atelier — Pandit Thulasidas (speculative preview)
 
-A same-day speculative website concept by Everest Marketing for Pandit Thulasidas, a Sydney Vedic astrologer and spiritual advisor. **This is a preview, not the live site.** The live site (https://psychicastrologersydney.com.au/), its domain and its DNS are untouched.
+A speculative website redesign by Everest Marketing for Pandit Thulasidas, a Vedic astrologer, psychic reader and spiritual advisor in Merrylands, Sydney. **This is a preview, not the live site.** The live site (https://psychicastrologersydney.com.au/), its domain and DNS are untouched, and production on Vercel still serves `main`.
+
+**Documentation:**
+- [Original site content audit](docs/ORIGINAL_SITE_CONTENT_AUDIT.md)
+- [Service inventory and URL map](docs/SERVICE_INVENTORY.md)
+- [Design direction](docs/DESIGN_DIRECTION.md)
+- [Motion spec](docs/MOTION_SPEC.md)
+- [Asset credits](docs/ASSET_CREDITS.md)
+- [QA report](docs/QA_REPORT.md)
+- Screenshots in `docs/screenshots/`
 
 ## Stack
-- Next.js 15 App Router, React 19, strict TypeScript, Tailwind CSS v4 with a small token-based design system in `src/app/globals.css`.
-- All routes are static (Server Components, `generateStaticParams` for consultation detail pages).
-- Client islands: the mobile menu, the active-nav link and the WhatsApp message composer.
-- Local OFL fonts (Instrument Serif and Manrope), stored as WOFF2 in `src/fonts/` with their licences. The build makes no remote font request.
-- No database, auth, server form handling, analytics, trackers or embeds.
+- **Framework:** Next.js 15 App Router, React 19, strict TypeScript.
+- **Styling:** Tailwind CSS v4, with design tokens and components in `src/app/globals.css` under `@layer components`.
+- **Motion:** GSAP 3.13 with ScrollTrigger and SplitText for scroll motion; a CSS-only hero entrance (see MOTION_SPEC).
+- **Rendering:** every route is static. Service pages use `generateStaticParams` from the typed catalogue in `src/content/catalogue.ts`.
+- **Client islands:** header (mega-panel and mobile menu), motion layer, Rāśi Chakra, service explorer, WhatsApp composer.
+- **Fonts:** local OFL fonts in `src/fonts/` (Cormorant Garamond, Manrope, and Tiro Devanagari Sanskrit subset to the glyphs used). The build makes no remote font requests.
+- **Images:** pre-optimised AVIF/WebP in `public/art/`, built by `scripts/process-images.py`. Credits are in `docs/ASSET_CREDITS.md` and on `/privacy#credits`.
+- **Not included:** no database, auth, server form handling, analytics, trackers or embeds.
 
 ## Routes
-`/`, `/about`, `/consultations`, `/consultations/{vedic-astrology,palm-reading,relationships-and-family,career-and-business,spiritual-guidance}`, `/faq`, `/contact`, `/privacy`, plus a custom 404.
+- **Main pages:** `/`, `/about`, `/consultations`, `/faq`, `/contact`, `/privacy`, plus a custom 404.
+- **16 service pages** under `/consultations/…`:
+  - **Love & relationships:** `love-marriage`, `relationship-guidance`, `get-your-love-back`, `extra-marital-concerns`.
+  - **Marriage & family:** `marriage-guidance`, `family-problems`, `childless-couples`.
+  - **Astrology & readings:** `vedic-astrology`, `palm-reading`, `psychic-reading`.
+  - **Work, money & life decisions:** `career-and-education`, `business-and-finance`, `legal-concerns`.
+  - **Spiritual guidance:** `spiritual-guidance`, `negative-energy`, `black-magic-concerns`.
+- **Generated:** `sitemap.xml` (not advertised while noindex) and `robots.txt`.
+- **Redirects:** the two URLs from the earlier preview redirect to their new homes.
 
 ## Commands
 ```bash
@@ -19,7 +39,8 @@ pnpm dev                 # http://localhost:3000
 pnpm lint && pnpm typecheck && pnpm test
 pnpm build && PORT=3100 pnpm start
 BASE_URL=http://localhost:3100 pnpm test:e2e   # Playwright (Chromium; WebKit if installed)
-BASE_URL=http://localhost:3100 node scripts/render-og.mjs   # regenerate OG artwork
+node scripts/render-og.mjs                                   # regenerate OG/Twitter artwork
+python3 scripts/process-images.py <downloaded-sources-dir>  # rebuild /public/art (see ASSET_CREDITS for sources)
 ```
 The e2e suite uses synthetic data only. It intercepts `window.open` and aborts every `wa.me` request, so no message is ever sent. Screenshots are written to `tests/e2e/output/` (git-ignored); curated copies live in `docs/screenshots/`.
 
@@ -31,12 +52,16 @@ The e2e suite uses synthetic data only. It intercepts `window.open` and aborts e
 - Phone/WhatsApp +61 426 562 158.
 
 **Proposed by this concept (owner approval needed):**
-- All copy, the five-service grouping, the visual identity and plate artwork, the editorial photography set, the FAQ answers, the enquiry flow and the privacy wording.
+- All copy, the 5-category / 16-page grouping, and the visual identity and artwork selection.
+- FAQ answers, the enquiry flow and the privacy wording.
+- The “25+ years” statement, shown as attributed and *awaiting confirmation*.
 
 **Deliberately omitted:**
-- Email addresses (conflicting), the second header number (+61 470 325 836) and the street address (only “Sydney, NSW” is shown).
-- The “Ask 1 Question Free” offer, reviews/testimonials, years of experience, guarantees, fees, hours and credentials.
-- Sensitive topics (court cases, family planning, black magic) are kept out of navigation.
+- Email addresses (four conflicting variants) and the second header number (+61 470 325 836).
+- The “Ask 1 Question Free” offer, guarantees, fees, hours and credentials.
+- Testimonials (unverified, styled as Google Reviews) and the original banners.
+
+**Sensitive topics:** these are now represented as the client advertises them, but with careful copy and explicit limits — childless couples, legal concerns, negative energy and black magic. The original address is shown, with “confirm visit arrangements”.
 
 ## Contact configuration
 One source: `src/config/business.ts` holds `tel:+61426562158` and `https://wa.me/61426562158`. Direct CTAs carry only a generic greeting. The composer keeps values in component memory and builds the `wa.me` URL once, on the “Open WhatsApp” click. **Owner confirmation of the number is required before any live release.**
@@ -70,4 +95,14 @@ Every deployment is **noindex** by default:
 Before launch: crawl the current URLs and sitemap, export GSC data if authorised, make every redirect a single hop, and update NAP listings.
 
 ## Imagery
-Three editorial images are used: an Unsplash still life, an Unsplash palm close-up and a public-domain Wellcome Collection engraving. Sources, rights, crops and rejected candidates are listed in [`docs/ASSET_CREDITS.md`](docs/ASSET_CREDITS.md). No practitioner likeness is generated or substituted.
+- **14 curated assets:** CC0 Indian paintings from the Cleveland Museum of Art, a Public Domain Mark Wellcome manuscript and four Unsplash photographs.
+- **Credits:** sources, rights, crops, cultural context and rejected candidates are in [`docs/ASSET_CREDITS.md`](docs/ASSET_CREDITS.md).
+- **Client images:** no images from the client's site are reused.
+- **Practitioner:** no likeness is generated or substituted; the portrait slot is labelled “Awaiting a client-approved photograph”.
+
+## Owner confirmation before any launch
+- **Contact details:** phone/WhatsApp number, current email, address and visit arrangements.
+- **Claims and offers:** the “25+ years” statement; whether phone consultations are offered Australia-wide; terms for any free-question offer.
+- **Services:** whether childless-couple, legal-concern and black-magic topics should stay, and whether the copy matches the actual practice.
+- **Brand and imagery:** an approved portrait; a vector logo; spelling “Pandit” vs “Pandith”; consent to use historical deity paintings in the brand.
+- **Testimonials:** verified testimonials with written permission, if any are to be shown.

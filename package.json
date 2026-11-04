@@ -1,5 +1,5 @@
 {
-  "name": "celestial-almanac-demo",
+  "name": "pandit-thulasidas-sacred-atelier",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@10.28.0",
@@ -13,6 +13,7 @@
     "test:e2e": "node tests/e2e/run.mjs"
   },
   "dependencies": {
+    "gsap": "3.13.0",
     "next": "15.5.29",
     "react": "19.1.1",
     "react-dom": "19.1.1"

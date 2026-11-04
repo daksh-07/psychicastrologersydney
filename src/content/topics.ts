@@ -1,17 +1,12 @@
-/**
- * Allowlisted enquiry topics. Only these slugs are accepted from the
- * /contact?topic= query string or the composer select.
- */
+import { services } from "./catalogue.ts";
+
+/** Allowlisted enquiry topics: every service slug plus a general option. */
 export const topics = [
-  { slug: "vedic-astrology", label: "Vedic astrology and horoscope reading" },
-  { slug: "palm-reading", label: "Palm reading" },
-  { slug: "relationships-and-family", label: "Relationships and family" },
-  { slug: "career-and-business", label: "Career and business" },
-  { slug: "spiritual-guidance", label: "Spiritual guidance" },
+  ...services.map((s) => ({ slug: s.slug, label: s.name })),
   { slug: "general", label: "General question" },
 ] as const;
 
-export type TopicSlug = (typeof topics)[number]["slug"];
+export type TopicSlug = string;
 
 const slugs: ReadonlySet<string> = new Set(topics.map((t) => t.slug));
 
@@ -25,5 +20,5 @@ export function topicLabel(slug: TopicSlug): string {
 
 /** Internal contact link with an allowlisted topic and nothing else. */
 export function contactHref(slug?: TopicSlug): string {
-  return slug ? `/contact?topic=${slug}#enquiry` : "/contact#enquiry";
+  return slug && isTopicSlug(slug) ? `/contact?topic=${slug}#enquiry` : "/contact#enquiry";
 }

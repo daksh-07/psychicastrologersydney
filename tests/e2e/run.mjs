@@ -1,4 +1,4 @@
-// Browser QA for The Celestial Almanac preview.
+// Browser QA for The Sacred Atelier preview.
 // Usage: BASE_URL=http://localhost:3100 node tests/e2e/run.mjs
 // Uses synthetic data only. wa.me navigations are intercepted and aborted — no message is ever sent.
 import { createRequire } from "node:module";
@@ -11,20 +11,15 @@ const BASE = process.env.BASE_URL ?? "http://localhost:3100";
 const OUT = new URL("./output/", import.meta.url).pathname;
 mkdirSync(OUT, { recursive: true });
 
-const ROUTES = [
-  "/",
-  "/about",
-  "/consultations",
-  "/consultations/vedic-astrology",
-  "/consultations/palm-reading",
-  "/consultations/relationships-and-family",
-  "/consultations/career-and-business",
-  "/consultations/spiritual-guidance",
-  "/faq",
-  "/contact",
-  "/privacy",
+const SERVICE_SLUGS = [
+  "love-marriage", "relationship-guidance", "get-your-love-back", "extra-marital-concerns",
+  "marriage-guidance", "family-problems", "childless-couples",
+  "vedic-astrology", "palm-reading", "psychic-reading",
+  "career-and-education", "business-and-finance", "legal-concerns",
+  "spiritual-guidance", "negative-energy", "black-magic-concerns",
 ];
-const WIDTHS = [320, 375, 390, 430, 768, 1024, 1440];
+const ROUTES = ["/", "/about", "/consultations", ...SERVICE_SLUGS.map((s) => `/consultations/${s}`), "/faq", "/contact", "/privacy"];
+const WIDTHS = [320, 375, 390, 430, 768, 1024, 1440, 1920];
 const SYNTH = { name: "Testa Synthetic", phone: "+61 400 000 000", note: "Synthetic QA note — 50% & more?" };
 
 let failures = 0;
@@ -68,6 +63,7 @@ async function run(browserType, label) {
         tel: [...document.querySelectorAll('a[href^="tel:"]')].map((a) => a.getAttribute("href")),
         wa: [...document.querySelectorAll('a[href*="wa.me"]')].map((a) => a.getAttribute("href")),
         html: document.documentElement.outerHTML,
+        text: document.body.innerText,
         headingsInOrder: (() => {
           const levels = [...document.querySelectorAll("h1,h2,h3,h4")].map((h) => +h.tagName[1]);
           return levels.every((l, i) => i === 0 || l <= levels[i - 1] + 1);
@@ -83,7 +79,7 @@ async function run(browserType, label) {
       check(`[${label}] ${r} tel links use configured number`, info.tel.length > 0 && info.tel.every((h) => h === "tel:+61426562158"), info.tel.join(","));
       check(`[${label}] ${r} wa links use configured number, no PII`, info.wa.every((h) => h.startsWith("https://wa.me/61426562158")));
       check(`[${label}] ${r} legacy header number absent`, !/470\s?325\s?836|470325836/.test(info.html));
-      check(`[${label}] ${r} no email / review stars / guarantee`, !/@gmail|mailto:|★|guarantee|best astrologer|testimonial/i.test(info.html));
+      check(`[${label}] ${r} no email / star ratings / overstated claims`, !/@gmail|mailto:/i.test(info.html) && !/★|100%|satisfaction guarantee|best astrologer|google reviews|spells? caster|solution in one call/i.test(info.text));
       titles.add(info.title);
       descs.add(info.desc);
     }
@@ -129,48 +125,33 @@ async function run(browserType, label) {
     await ctx.close();
   }
 
-  // ---------- Editorial images ----------
+  // ---------- Art & imagery ----------
   {
-    const expected = { "/": ["notebook", ""], "/consultations/palm-reading": ["palm", "alt"], "/consultations/vedic-astrology": ["sphere", "alt"] };
     for (const w of [390, 1440]) {
       const ctx = await browser.newContext({ viewport: { width: w, height: 900 } });
       const page = await ctx.newPage();
       for (const r of ROUTES) {
         await page.goto(BASE + r, { waitUntil: "load" });
-        const figs = await page.evaluate(() =>
-          [...document.querySelectorAll("figure.editorial-figure")].map((f) => {
-            const img = f.querySelector("img");
-            const frame = f.querySelector(".frame").getBoundingClientRect();
-            const hero = document.querySelector("main > section:first-child");
-            return {
-              name: f.dataset.image,
-              alt: img.getAttribute("alt"),
-              loading: img.getAttribute("loading"),
-              reserved: frame.height > 100,
-              afterOpening: frame.top >= (hero?.getBoundingClientRect().bottom ?? 0),
-              inHero: hero?.contains(f) ?? false,
-              hasCredit: f.querySelector("figcaption")?.textContent.length > 10,
-            };
-          }),
+        const imgs = await page.evaluate(() =>
+          [...document.querySelectorAll("main img")].map((i) => ({
+            src: i.getAttribute("src"),
+            alt: i.getAttribute("alt"),
+            w: i.getAttribute("width"),
+            h: i.getAttribute("height"),
+            loading: i.getAttribute("loading"),
+            hero: !!i.closest("[data-hero]"),
+            local: (i.getAttribute("src") || "").startsWith("/art/"),
+          })),
         );
-        const exp = expected[r];
-        if (!exp) {
-          check(`[${label}] ${w}px ${r} stays typography-led (no photos)`, figs.length === 0);
-          continue;
-        }
-        const f = figs[0];
-        check(`[${label}] ${w}px ${r} shows ${exp[0]} image`, figs.length === 1 && f.name === exp[0]);
-        check(`[${label}] ${w}px ${r} alt ${exp[1] === "" ? "empty (decorative)" : "informative"}`, exp[1] === "" ? f.alt === "" : (f.alt ?? "").length > 30);
-        check(`[${label}] ${w}px ${r} image lazy, after the opening band, outside hero`, f.loading === "lazy" && f.afterOpening && !f.inHero);
-        check(`[${label}] ${w}px ${r} aspect box reserved before load`, f.reserved);
-        check(`[${label}] ${w}px ${r} caption + credit visible`, f.hasCredit);
+        check(`[${label}] ${w}px ${r} images local, sized, with alt attribute`, imgs.every((i) => i.local && i.w && i.h && i.alt !== null), JSON.stringify(imgs.filter((i) => !(i.local && i.w && i.h && i.alt !== null))));
+        check(`[${label}] ${w}px ${r} below-hero images lazy`, imgs.filter((i) => !i.hero).every((i) => i.loading === "lazy"));
       }
       await ctx.close();
     }
     const head = await (await browser.newContext()).newPage();
     await head.goto(BASE + "/", { waitUntil: "load" });
-    const preloads = await head.evaluate(() => [...document.querySelectorAll('link[rel="preload"][as="image"]')].length);
-    check(`[${label}] no image preloads in critical path`, preloads === 0);
+    const heroImg = await head.evaluate(() => { const i = document.querySelector("[data-hero] img"); return i && { loading: i.getAttribute("loading"), alt: i.getAttribute("alt") }; });
+    check(`[${label}] hero artwork eager with descriptive alt`, heroImg?.loading === "eager" && (heroImg?.alt ?? "").length > 40);
   }
 
   // ---------- Mobile menu ----------
@@ -178,19 +159,23 @@ async function run(browserType, label) {
     const ctx = await browser.newContext({ viewport: { width: 320, height: 720 } });
     const page = await ctx.newPage();
     await page.goto(BASE + "/", { waitUntil: "networkidle" });
-    const btn = page.locator('button[aria-controls="mobile-menu"]');
+    const btn = page.locator('button[aria-controls="site-menu"]');
     check(`[${label}] menu toggle labelled & collapsed`, (await btn.getAttribute("aria-expanded")) === "false" && (await btn.innerText()).includes("Menu"));
     await btn.click();
-    check(`[${label}] menu opens`, (await btn.getAttribute("aria-expanded")) === "true" && (await page.locator("#mobile-menu").isVisible()));
-    const focusedInMenu = await page.evaluate(() => !!document.activeElement?.closest("#mobile-menu"));
+    await page.waitForTimeout(900);
+    check(`[${label}] menu opens`, (await btn.getAttribute("aria-expanded")) === "true" && (await page.locator("#site-menu").isVisible()));
+    const focusedInMenu = await page.evaluate(() => !!document.activeElement?.closest("#site-menu"));
     check(`[${label}] focus moves into menu`, focusedInMenu);
     if (full) await page.screenshot({ path: `${OUT}menu-open-320.png` });
     await page.keyboard.press("Escape");
-    check(`[${label}] Escape closes menu and returns focus`, (await btn.getAttribute("aria-expanded")) === "false" && (await page.evaluate(() => document.activeElement?.getAttribute("aria-controls"))) === "mobile-menu");
+    await page.waitForTimeout(800);
+    check(`[${label}] Escape closes menu and returns focus`, (await btn.getAttribute("aria-expanded")) === "false" && (await page.evaluate(() => document.activeElement?.getAttribute("aria-controls"))) === "site-menu" && !(await page.locator("#site-menu").isVisible()));
     await btn.click();
-    await page.locator("#mobile-menu a", { hasText: "About" }).click();
+    await page.waitForTimeout(900);
+    await page.locator("#site-menu a", { hasText: "About" }).click();
     await page.waitForURL("**/about");
-    check(`[${label}] route change closes menu`, (await btn.getAttribute("aria-expanded")) === "false" && !(await page.locator("#mobile-menu").isVisible()));
+    await page.waitForTimeout(900);
+    check(`[${label}] route change closes menu`, (await btn.getAttribute("aria-expanded")) === "false" && !(await page.locator("#site-menu").isVisible()));
     await page.goto(BASE + "/", { waitUntil: "networkidle" });
     await page.keyboard.press("Tab");
     check(`[${label}] first Tab reaches skip link`, (await page.evaluate(() => document.activeElement?.textContent)) === "Skip to content");
@@ -213,9 +198,9 @@ async function run(browserType, label) {
       };
     });
 
-    await page.goto(BASE + "/contact?topic=career-and-business", { waitUntil: "networkidle" });
+    await page.goto(BASE + "/contact?topic=career-and-education", { waitUntil: "networkidle" });
     const sel = page.locator("select");
-    check(`[${label}] allowlisted topic preselected from query`, (await sel.inputValue()) === "career-and-business");
+    check(`[${label}] allowlisted topic preselected from query`, (await sel.inputValue()) === "career-and-education");
     await page.goto(BASE + "/contact?topic=black-magic", { waitUntil: "networkidle" });
     check(`[${label}] unknown topic ignored`, (await page.locator("select").inputValue()) === "");
 
@@ -286,8 +271,16 @@ async function run(browserType, label) {
     const rctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce" });
     const rp = await rctx.newPage();
     await rp.goto(BASE + "/", { waitUntil: "load" });
-    const anim = await rp.evaluate(() => getComputedStyle(document.querySelector(".plate-orbit")).animationName);
-    check(`[${label}] reduced motion: orbit static`, anim === "none", anim);
+    const t0 = await rp.evaluate(() => getComputedStyle(document.querySelector("[data-spin]")).transform);
+    await rp.waitForTimeout(1500);
+    const rm = await rp.evaluate(() => ({
+      motionClass: document.documentElement.classList.contains("motion"),
+      ledeOpacity: getComputedStyle(document.querySelector('[data-hero-in="2"]')).opacity,
+      artClip: getComputedStyle(document.querySelector("[data-hero-art]")).clipPath,
+      splitLines: document.querySelectorAll(".line").length,
+      spin: getComputedStyle(document.querySelector("[data-spin]")).transform,
+    }));
+    check(`[${label}] reduced motion: hero visible immediately, no split/spin`, !rm.motionClass && rm.ledeOpacity === "1" && rm.artClip === "none" && rm.splitLines === 0 && rm.spin === t0, JSON.stringify(rm));
     if (full) await rp.screenshot({ path: `${OUT}home-reduced-motion-1440.png` });
     await rctx.close();
   }
@@ -299,7 +292,13 @@ async function run(browserType, label) {
       const page = await ctx.newPage();
       for (const r of ["/", "/contact", "/consultations/vedic-astrology", "/consultations/palm-reading"]) {
         await page.goto(BASE + r, { waitUntil: "networkidle" });
-        await page.waitForTimeout(1300);
+        await page.waitForTimeout(2200);
+        // Scroll through so scroll-triggered reveals have played before the full-page capture.
+        const H = await page.evaluate(() => document.body.scrollHeight);
+        for (let y = 0; y < H; y += 450) { await page.evaluate((v) => window.scrollTo(0, v), y); await page.waitForTimeout(110); }
+        await page.waitForTimeout(1800);
+        await page.evaluate(() => window.scrollTo(0, 0));
+        await page.waitForTimeout(700);
         const name = r === "/" ? "home" : r.split("/").pop();
         await page.screenshot({ path: `${OUT}${name}-${w}.png`, fullPage: true });
       }

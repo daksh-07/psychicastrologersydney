@@ -1,115 +1,114 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CelestialPlate } from "@/components/CelestialPlate";
-import { CtaPanel } from "@/components/CtaPanel";
-import { PageIntro } from "@/components/PageIntro";
+import { HeroTitle } from "@/components/motion/HeroTitle";
+import { ArtFigure } from "@/components/art/ArtFigure";
+import { ArtImage } from "@/components/art/ArtImage";
+import { FinalCta } from "@/components/FinalCta";
+import { business } from "@/config/business";
+import { categories, servicesIn } from "@/content/catalogue";
+import { principles } from "@/content/general";
 
 export const metadata: Metadata = {
   title: "About Pandit Thulasidas",
   description:
-    "Pandit Thulasidas offers private Vedic astrology, palm reading and spiritual consultations in Sydney. Learn about the reading approaches offered.",
-  openGraph: { title: "Meet Pandit Thulasidas", url: "/about" },
+    "Pandit Thulasidas is a Vedic astrologer, psychic reader and spiritual advisor in Sydney offering private, one-to-one consultations.",
+  openGraph: { title: "About Pandit Thulasidas", url: "/about" },
 };
-
-const approaches = [
-  {
-    href: "/consultations/vedic-astrology",
-    title: "Vedic astrology and horoscope",
-    body: "A reading built on the birth chart, interpreted within the Jyotish tradition and related to the question you bring.",
-  },
-  {
-    href: "/consultations/palm-reading",
-    title: "Traditional palmistry",
-    body: "A reading of the shape, lines and markings of the hands — a different, more immediate way into a personal question.",
-  },
-  {
-    href: "/consultations/spiritual-guidance",
-    title: "Spiritual consultation",
-    body: "An unhurried conversation about a personal concern, held within a traditional framework and at your pace.",
-  },
-];
-
-const subjects = [
-  { href: "/consultations/relationships-and-family", label: "Relationships, marriage and family" },
-  { href: "/consultations/career-and-business", label: "Work, study and business decisions" },
-  { href: "/consultations/spiritual-guidance", label: "Personal direction and spiritual concerns" },
-];
 
 export default function AboutPage() {
   return (
     <>
-      <PageIntro
-        eyebrow="About · Sydney, NSW"
-        title="Meet Pandit Thulasidas"
-        lead="Pandit Thulasidas offers private astrology and spiritual consultations in Sydney. You can bring a question about relationships, family, work or personal direction."
-      />
+      <section className="s-ink dark grain relative overflow-hidden" data-hero>
+        <div className="absolute inset-0 opacity-45" data-hero-art>
+          <ArtImage name="lepakshi" sizes="100vw" priority alt="" className="h-full w-full" focus="50% 60%" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-ink)] via-[var(--color-ink)]/80 to-transparent" />
+        <div className="wrap relative flex min-h-[78svh] flex-col justify-end pb-16 pt-24 md:pb-24">
+          <p className="eyebrow accent" data-hero-in="1">About · Merrylands, Sydney</p>
+          <HeroTitle className="t-mega mt-6 max-w-[11ch]" text="Meet Pandit *Thulasidas*" />
+          <p className="lede muted mt-8" data-hero-in="2">
+            A Vedic astrologer, psychic reader and spiritual advisor offering private consultations in Sydney — for
+            love, marriage, family, career, business, finances and personal concerns.
+          </p>
+        </div>
+        <p className="caption wrap relative pb-6 text-[var(--color-on-dark-soft)]">Carved hall, Lepakshi. Photograph: Suhas Hanjar / Unsplash.</p>
+      </section>
 
-      <section className="on-paper section" aria-labelledby="approach-title">
-        <div className="wrap grid-cols gap-y-10">
-          <div className="col-span-4 md:col-span-8 lg:col-span-4">
-            <p className="eyebrow brass">01 · Approach</p>
-            <h2 id="approach-title" className="display-2 mt-5">Three ways of reading</h2>
-            <p className="muted measure mt-6">
-              Every consultation is one to one. The method depends on your question and your preference — some
-              people choose one approach, others combine them.
-            </p>
+      <section className="s-ivory sec" aria-labelledby="practice-title">
+        <div className="wrap grid-x gap-y-14">
+          <div className="col-span-4 md:col-span-8 lg:col-span-6">
+            <p className="eyebrow accent">The practice</p>
+            <h2 id="practice-title" className="t-h2 mt-5" data-split>Traditional knowledge, <em>one person</em> at a time.</h2>
+            <div className="prose-at mt-8 max-w-[58ch] text-[1.05rem]" data-reveal="rise">
+              <p>
+                With knowledge of traditional Indian astrology and spiritual practice, Pandit Thulasidas provides
+                one-to-one consultations tailored to the questions and circumstances of each person.
+              </p>
+              <p className="muted">
+                His services include Vedic astrology and horoscope reading, palmistry, psychic guidance, love and
+                relationship consultations, and spiritual guidance for concerns such as negative energy, recurring
+                obstacles and the evil eye.
+              </p>
+              <p className="muted">
+                The aim, in the practice&apos;s own words, is “a traditional astrology or psychic perspective that may help
+                clients better understand their circumstances and possible choices.”
+              </p>
+            </div>
+            <div className="mt-12 flex items-end gap-6 border-t border-[var(--color-rule)] pt-8" data-reveal="rise">
+              <p className="font-display text-[clamp(4rem,8vw,6.5rem)] font-light leading-[0.8] accent">25<span className="align-top text-[0.5em]">+</span></p>
+              <p className="caption muted max-w-[34ch] pb-1">
+                The current website states {business.experienceClaim}. <strong className="text-[var(--color-ink)]">Awaiting confirmation before publication.</strong>
+              </p>
+            </div>
           </div>
-          <ul className="col-span-4 md:col-span-8 lg:col-span-7 lg:col-start-6">
-            {approaches.map((a) => (
-              <li key={a.href} className="border-b border-rule py-8 first:border-t">
-                <h3 className="row-title">{a.title}</h3>
-                <p className="muted measure mt-3">{a.body}</p>
-                <Link href={a.href} className="text-link mt-2">
-                  <span>Read about {a.title.toLowerCase()}</span>
-                  <span className="arrow" aria-hidden="true">→</span>
-                </Link>
+          <div className="col-span-4 md:col-span-6 md:col-start-2 lg:col-span-5 lg:col-start-8">
+            <ArtFigure name="krishna-awaiting" shape="arch" ratio="3 / 4" sizes="(min-width:1100px) 34vw, 90vw" numeral="Fig." className="mx-auto max-w-[440px]" />
+            <div className="mt-10 rounded-[6px] border border-dashed border-[var(--color-ink)]/30 p-6">
+              <p className="eyebrow">For the owner</p>
+              <p className="muted mt-2 text-[0.95rem]">
+                No photograph of Pandit Thulasidas appears on the current website, so none is used here. A client-approved
+                portrait would take this place.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="s-parchment grain sec" aria-labelledby="areas-title">
+        <div className="wrap">
+          <h2 id="areas-title" className="t-h2 max-w-[18ch]" data-split>What people <em>bring</em></h2>
+          <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-5" data-stagger>
+            {categories.map((c) => (
+              <div key={c.slug} className="border-t border-[var(--color-ink)]/25 pt-5">
+                <p className="numeral accent text-2xl">{c.numeral}</p>
+                <h3 className="t-h4 mt-2">{c.name}</h3>
+                <ul className="mt-3 grid gap-1 text-[0.95rem]">
+                  {servicesIn(c.slug).map((s) => (
+                    <li key={s.slug}><Link href={`/consultations/${s.slug}`} className="underline-offset-4 hover:underline">{s.name}</Link></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="s-ivory sec-sm" aria-labelledby="held-title">
+        <div className="wrap">
+          <h2 id="held-title" className="t-h2" data-split>How consultations are <em>held</em></h2>
+          <ul className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4" data-stagger>
+            {principles.map((p, i) => (
+              <li key={p.title}>
+                <span className="numeral accent text-2xl">{["i", "ii", "iii", "iv"][i]}</span>
+                <h3 className="t-h4 mt-3">{p.title}</h3>
+                <p className="muted mt-2 text-[0.95rem]">{p.body}</p>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      <section className="section" aria-labelledby="bring-title">
-        <div className="wrap grid-cols gap-y-10">
-          <div className="col-span-4 md:col-span-5 lg:col-span-6">
-            <p className="eyebrow brass">02 · Subjects</p>
-            <h2 id="bring-title" className="display-2 mt-5">What people bring</h2>
-            <p className="lead mt-6">
-              A consultation starts from your question rather than a script. These are the subjects most often
-              brought to a session.
-            </p>
-            <ul className="mt-8">
-              {subjects.map((s) => (
-                <li key={s.label} className="border-b border-rule first:border-t">
-                  <Link href={s.href} className="flex min-h-14 items-center justify-between gap-4 py-3 font-semibold no-underline hover:underline">
-                    {s.label}
-                    <span className="arrow brass" aria-hidden="true">→</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="col-span-4 md:col-span-3 lg:col-span-5 lg:col-start-8" aria-hidden="true">
-            <CelestialPlate tone="paper" viewBox="160 160 320 320" className="h-auto w-full max-w-[420px]" />
-          </div>
-        </div>
-      </section>
-
-      <section className="on-paper section-tight rule-top" aria-labelledby="note-title">
-        <div className="wrap grid-cols gap-y-6">
-          <p className="eyebrow brass col-span-4 md:col-span-2 lg:col-span-3">03 · A note</p>
-          <div className="col-span-4 md:col-span-6 lg:col-span-7">
-            <h2 id="note-title" className="heading-3">On expectations</h2>
-            <p className="muted measure mt-4">
-              Astrology and palmistry offer a traditional perspective. A consultation is a place to reflect, not a
-              promise of any outcome, and it works best alongside — never instead of — advice from qualified
-              professionals where health, law or money are concerned.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <CtaPanel heading="Ask a first question" body="Get in touch to ask about availability, format and fees. A short message is enough to begin." />
+      <FinalCta heading="Ask a" italic="first question." />
     </>
   );
 }

@@ -10,6 +10,13 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   env: { SITE_INDEXABLE: indexable ? "true" : "false" },
+  async redirects() {
+    // Earlier preview URLs (feat/celestial-almanac-demo) → their new homes. Temporary on purpose.
+    return [
+      { source: "/consultations/relationships-and-family", destination: "/consultations/relationship-guidance", permanent: false },
+      { source: "/consultations/career-and-business", destination: "/consultations/business-and-finance", permanent: false },
+    ];
+  },
   async headers() {
     const base = [
       { key: "X-Content-Type-Options", value: "nosniff" },
