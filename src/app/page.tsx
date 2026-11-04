@@ -70,8 +70,6 @@ export default function HomePage() {
               heroArt
               sizes="(min-width:1100px) 36vw, (min-width:768px) 70vw, 92vw"
               className="relative mx-auto max-w-[460px]"
-              captionClassName="relative rounded-[4px] bg-[var(--color-ivory)] py-1 pr-2"
-              numeral="Fig. 1"
             />
           </div>
         </div>
@@ -122,7 +120,7 @@ export default function HomePage() {
           </div>
           <div className="col-span-4 md:col-span-6 md:col-start-2 lg:col-span-5 lg:col-start-8">
             <div className="overflow-hidden" data-parallax="0.12">
-              <ArtFigure name="jantar-mantar" ratio="4 / 5" sizes="(min-width:1100px) 36vw, 90vw" numeral="Fig. 2" dir="up" />
+              <ArtFigure name="jantar-mantar" ratio="4 / 5" sizes="(min-width:1100px) 36vw, 90vw" dir="up" />
             </div>
           </div>
         </div>
@@ -140,7 +138,6 @@ export default function HomePage() {
                   <p className="mt-1 font-display text-xl italic text-[var(--color-ivory)]">Awaiting a client-approved photograph</p>
                 </div>
               </div>
-              <figcaption className="caption muted mt-3">Placeholder: carved hall, Lepakshi. Photograph: Suhas Hanjar / Unsplash.</figcaption>
             </figure>
           </div>
           <div className="col-span-4 md:col-span-4 lg:col-span-6 lg:col-start-7">
@@ -220,7 +217,6 @@ export default function HomePage() {
                 </li>
               ))}
             </ul>
-            <p className="caption muted mt-6">Fig. 3 — Sakhi persuades Radha to meet Krishna, Gita Govinda, c. 1820–25. The Cleveland Museum of Art · CC0.</p>
           </div>
         </div>
       </section>
@@ -262,7 +258,7 @@ export default function HomePage() {
       <section className="s-parchment grain sec relative overflow-hidden" aria-labelledby="spirit-title">
         <div className="wrap grid-x items-center gap-y-14">
           <div className="col-span-4 md:col-span-4 lg:col-span-5">
-            <ArtFigure name="ganesha" shape="arch" ratio="3 / 4" sizes="(min-width:1100px) 34vw, (min-width:768px) 45vw, 90vw" numeral="Fig. 4" className="mx-auto max-w-[460px]" />
+            <ArtFigure name="ganesha" shape="arch" ratio="3 / 4" sizes="(min-width:1100px) 34vw, (min-width:768px) 45vw, 90vw" className="mx-auto max-w-[460px]" />
           </div>
           <div className="col-span-4 md:col-span-4 lg:col-span-6 lg:col-start-7">
             <p className="eyebrow accent"><span className="numeral mr-2 text-base normal-case tracking-normal">VI.</span>Spiritual guidance</p>
@@ -299,7 +295,7 @@ export default function HomePage() {
               Three quiet <em>steps</em>.
             </h2>
             <div className="mt-12 hidden overflow-hidden lg:block" data-parallax="0.1">
-              <ArtFigure name="temple-corridor" ratio="4 / 5" sizes="34vw" numeral="Fig. 5" />
+              <ArtFigure name="temple-corridor" ratio="4 / 5" sizes="34vw" />
             </div>
           </div>
           <ol className="relative col-span-4 md:col-span-8 lg:col-span-6 lg:col-start-7 lg:pt-40">

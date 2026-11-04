@@ -29,7 +29,6 @@ p{font:600 20px/1.45 M;color:#4a4037;margin-top:26px;max-width:32ch}
 </style></head><body>
 <div><div class="e"><b>ज्योतिष</b>Pandit Thulasidas · Sydney</div><h1>Ancient sky, <em>personal</em> counsel.</h1><p>Vedic astrology, palmistry, psychic &amp; spiritual guidance.</p></div>
 <div class="a"><img src="${art}"></div>
-<div class="c">Krishna Fluting, Rajasthan c. 1675–1700 · The Cleveland Museum of Art · CC0</div>
 </body></html>`);
 await p.evaluate(() => document.fonts.ready);
 await p.waitForTimeout(300);

@@ -31,7 +31,6 @@ export default function AboutPage() {
             love, marriage, family, career, business, finances and personal concerns.
           </p>
         </div>
-        <p className="caption wrap relative pb-6 text-[var(--color-on-dark-soft)]">Carved hall, Lepakshi. Photograph: Suhas Hanjar / Unsplash.</p>
       </section>
 
       <section className="s-ivory sec" aria-labelledby="practice-title">
@@ -62,7 +61,7 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="col-span-4 md:col-span-6 md:col-start-2 lg:col-span-5 lg:col-start-8">
-            <ArtFigure name="krishna-awaiting" shape="arch" ratio="3 / 4" sizes="(min-width:1100px) 34vw, 90vw" numeral="Fig." className="mx-auto max-w-[440px]" />
+            <ArtFigure name="krishna-awaiting" shape="arch" ratio="3 / 4" sizes="(min-width:1100px) 34vw, 90vw" className="mx-auto max-w-[440px]" />
             <div className="mt-10 rounded-[6px] border border-dashed border-[var(--color-ink)]/30 p-6">
               <p className="eyebrow">For the owner</p>
               <p className="muted mt-2 text-[0.95rem]">

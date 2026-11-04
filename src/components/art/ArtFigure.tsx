@@ -1,4 +1,4 @@
-import { art, type ArtKey } from "@/content/art";
+import type { ArtKey } from "@/content/art";
 import { ArtImage } from "./ArtImage";
 
 type Props = {
@@ -12,16 +12,13 @@ type Props = {
   fit?: "cover" | "contain";
   focus?: string;
   priority?: boolean;
-  caption?: boolean;
-  numeral?: string;
   className?: string;
   frameClassName?: string;
   heroArt?: boolean;
   alt?: string;
-  captionClassName?: string;
 };
 
-/** A framed artwork with a museum-style caption. */
+/** A framed artwork. No visible caption or credit — provenance is kept in docs/ASSET_CREDITS.md. */
 export function ArtFigure({
   name,
   sizes,
@@ -32,15 +29,11 @@ export function ArtFigure({
   fit,
   focus,
   priority,
-  caption = true,
-  numeral,
   className,
   frameClassName,
   heroArt,
   alt,
-  captionClassName,
 }: Props) {
-  const meta = art[name];
   return (
     <figure className={className}>
       <div
@@ -52,15 +45,6 @@ export function ArtFigure({
       >
         <ArtImage name={name} sizes={sizes} priority={priority} focus={focus} fit={fit} alt={alt} className="h-full w-full" />
       </div>
-      {caption && (
-        <figcaption className={`caption muted mt-3 flex gap-3 ${captionClassName ?? ""}`}>
-          {numeral && <span className="numeral whitespace-nowrap text-[0.95rem] leading-none accent">{numeral}</span>}
-          <span>
-            <span className="font-semibold text-current">{meta.title}</span>. {meta.detail}{" "}
-            <span className="opacity-80">{meta.credit}</span>
-          </span>
-        </figcaption>
-      )}
     </figure>
   );
 }

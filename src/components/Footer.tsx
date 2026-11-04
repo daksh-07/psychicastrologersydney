@@ -71,8 +71,7 @@ export function Footer() {
         <div className="grid gap-4 border-t border-white/10 py-8 text-sm md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] md:gap-12">
           <p className="muted max-w-[70ch]" data-disclaimer>{disclaimer}</p>
           <p className="muted md:text-right">
-            {conceptCredit} · Speculative preview, not the live site ·{" "}
-            <Link href="/privacy#credits" className="underline">Image credits</Link>
+            {conceptCredit} · Speculative preview, not the live site
           </p>
         </div>
       </div>

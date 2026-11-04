@@ -9,11 +9,12 @@ Date: 4 November 2026 (Sydney). Branch `feat/sacred-atelier-redesign`. All resul
 | Strict typecheck | `pnpm typecheck` | ✅ |
 | Unit tests (validation, encoding, topic allowlist) | `pnpm test` | ✅ 5/5 |
 | Production build | `pnpm build` | ✅ 29 static routes (16 SSG service pages) |
-| Browser e2e | `BASE_URL=http://localhost:3100 pnpm test:e2e` | ✅ **380/380 passed** in Chromium · WebKit **not run** (see below) |
+| Browser e2e | `BASE_URL=http://localhost:3100 pnpm test:e2e` | ✅ **402/402 passed** in Chromium · WebKit **not run** (see below) |
 
 ### What the e2e suite covers
 - **All 22 routes:** 200 status, exactly one H1, no skipped heading levels, unique titles and descriptions, shared header/footer, `noindex` in both meta and `X-Robots-Tag`, no preview canonical.
 - **Contact links:** `tel:` links all equal `tel:+61426562158`; every `wa.me` link uses 61426562158; the legacy number 470 325 836 is absent.
+- **No image sources on the page:** visible text on every route is checked for “Unsplash”, “Cleveland Museum”, “Wellcome”, “Photograph:”, “Fig.”, “CC0” and “public domain” — none appear.
 - **Content scan (visible text):** no email/mailto, ★, “100%”, “satisfaction guarantee”, “best astrologer”, “Google Reviews”, “spell caster” or “solution in one call”.
 - **Error and crawl handling:** custom 404; robots.txt allows crawling and has no sitemap while noindex; OG artwork served; zero console errors.
 - **No horizontal overflow** on all 22 routes at **320, 375, 390, 430, 768, 1024, 1440 and 1920 px**.
@@ -107,6 +108,7 @@ Lighthouse 12.6.0 against `localhost:3100` with simulated throttling. Mobile use
    - Chakra buttons narrower than 44 px at 320 px.
    - Below-the-fold reveals missing from full-page captures (the screenshot harness now scrolls first).
 3. **Pass 3 (performance and accessibility)** produced the LCP, font and contrast fixes above.
+4. **Pass 4 (client feedback)** removed all on-page captions, “Fig.” labels and image-source credits, including the public credits list on `/privacy`. Full-page screenshot captures now use Playwright's `animations: "disabled"`: Chromium's full-page mode was restarting the CSS hero wipe and photographing it mid-animation, so an earlier homepage screenshot was missing the painting. Real browsers were unaffected.
 
 Comparison with the original site, which has no H1 on 8 of 15 pages, PHP warnings exposing server paths, image-text banners and guarantee badges: the redesign has one semantic H1 per page, all copy as live text, no exposed errors, licensed and credited imagery, and every original service represented (`docs/SERVICE_INVENTORY.md`).
 

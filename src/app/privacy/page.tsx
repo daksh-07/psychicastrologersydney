@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HeroTitle } from "@/components/motion/HeroTitle";
 import { conceptCredit } from "@/config/business";
-import { art } from "@/content/art";
 
 export const metadata: Metadata = {
-  title: "Privacy, enquiries & credits",
+  title: "Privacy & your enquiry",
   description:
-    "How the WhatsApp message composer on this preview handles the details you type, what happens when you open WhatsApp, and credits for the artworks and photographs used.",
-  openGraph: { title: "Privacy & credits", url: "/privacy" },
+    "How the WhatsApp message composer on this preview handles the details you type, what happens when you open WhatsApp.",
+  openGraph: { title: "Privacy & your enquiry", url: "/privacy" },
 };
 
 const SECTIONS = [
@@ -50,7 +49,7 @@ export default function PrivacyPage() {
     <>
       <section className="s-parchment grain" data-hero>
         <div className="wrap pb-16 pt-10 md:pb-20 md:pt-16">
-          <p className="eyebrow accent" data-hero-in="1">Privacy · Enquiries · Credits</p>
+          <p className="eyebrow accent" data-hero-in="1">Privacy · Enquiries</p>
           <HeroTitle className="t-display mt-6 max-w-[14ch]" text="Privacy and your *enquiry*" />
           <p className="lede muted mt-8" data-hero-in="2">A plain explanation of what happens to the details you type into the message composer.</p>
         </div>
@@ -66,24 +65,10 @@ export default function PrivacyPage() {
               </div>
             </article>
           ))}
-        </div>
-      </section>
-      <section id="credits" className="s-paper sec-sm border-t border-[var(--color-rule)] scroll-mt-24" aria-labelledby="credits-title">
-        <div className="wrap">
-          <h2 id="credits-title" className="t-h2" data-split>Image <em>credits</em></h2>
-          <p className="muted mt-4 max-w-[64ch]">
-            Paintings are historical artworks from open-access museum collections, shown as art — not as charts, remedies
-            or images of the practitioner. Full provenance is recorded in the project’s asset credits.
-          </p>
-          <ul className="mt-10 grid gap-x-10 gap-y-5 md:grid-cols-2">
-            {Object.entries(art).map(([k, a]) => (
-              <li key={k} className="border-t border-[var(--color-rule)] pt-4 text-[0.95rem]">
-                <span className="font-semibold">{a.title}</span> — {a.detail} <span className="muted">{a.credit}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="eyebrow accent mt-12">{conceptCredit}</p>
-          <Link href="/contact" className="ulink mt-4">← Back to contact</Link>
+          <div className="col-span-4 md:col-span-6 md:col-start-3 lg:col-span-7 lg:col-start-4">
+            <p className="eyebrow accent">{conceptCredit}</p>
+            <Link href="/contact" className="ulink mt-4">← Back to contact</Link>
+          </div>
         </div>
       </section>
     </>

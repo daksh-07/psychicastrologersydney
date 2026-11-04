@@ -80,6 +80,7 @@ async function run(browserType, label) {
       check(`[${label}] ${r} wa links use configured number, no PII`, info.wa.every((h) => h.startsWith("https://wa.me/61426562158")));
       check(`[${label}] ${r} legacy header number absent`, !/470\s?325\s?836|470325836/.test(info.html));
       check(`[${label}] ${r} no email / star ratings / overstated claims`, !/@gmail|mailto:/i.test(info.html) && !/★|100%|satisfaction guarantee|best astrologer|google reviews|spells? caster|solution in one call/i.test(info.text));
+      check(`[${label}] ${r} no image sources or figure labels in visible text`, !/unsplash|cleveland museum|wellcome|photograph:|\bfig\.|cc0|public domain/i.test(info.text));
       titles.add(info.title);
       descs.add(info.desc);
     }
@@ -300,7 +301,7 @@ async function run(browserType, label) {
         await page.evaluate(() => window.scrollTo(0, 0));
         await page.waitForTimeout(700);
         const name = r === "/" ? "home" : r.split("/").pop();
-        await page.screenshot({ path: `${OUT}${name}-${w}.png`, fullPage: true });
+        await page.screenshot({ path: `${OUT}${name}-${w}.png`, fullPage: true, animations: "disabled" });
       }
       if (w === 390) {
         await page.goto(BASE + "/faq", { waitUntil: "networkidle" });

@@ -18,7 +18,7 @@ A speculative website redesign by Everest Marketing for Pandit Thulasidas, a Ved
 - **Rendering:** every route is static. Service pages use `generateStaticParams` from the typed catalogue in `src/content/catalogue.ts`.
 - **Client islands:** header (mega-panel and mobile menu), motion layer, Rāśi Chakra, service explorer, WhatsApp composer.
 - **Fonts:** local OFL fonts in `src/fonts/` (Cormorant Garamond, Manrope, and Tiro Devanagari Sanskrit subset to the glyphs used). The build makes no remote font requests.
-- **Images:** pre-optimised AVIF/WebP in `public/art/`, built by `scripts/process-images.py`. Credits are in `docs/ASSET_CREDITS.md` and on `/privacy#credits`.
+- **Images:** pre-optimised AVIF/WebP in `public/art/`, built by `scripts/process-images.py`. Credits are recorded in `docs/ASSET_CREDITS.md` only; none are displayed on the site.
 - **Not included:** no database, auth, server form handling, analytics, trackers or embeds.
 
 ## Routes
@@ -96,7 +96,7 @@ Before launch: crawl the current URLs and sitemap, export GSC data if authorised
 
 ## Imagery
 - **14 curated assets:** CC0 Indian paintings from the Cleveland Museum of Art, a Public Domain Mark Wellcome manuscript and four Unsplash photographs.
-- **Credits:** sources, rights, crops, cultural context and rejected candidates are in [`docs/ASSET_CREDITS.md`](docs/ASSET_CREDITS.md).
+- **Credits:** sources, rights, crops, cultural context and rejected candidates are in [`docs/ASSET_CREDITS.md`](docs/ASSET_CREDITS.md). No captions or source credits are shown on the website; none of the licences require them.
 - **Client images:** no images from the client's site are reused.
 - **Practitioner:** no likeness is generated or substituted; the portrait slot is labelled “Awaiting a client-approved photograph”.
 

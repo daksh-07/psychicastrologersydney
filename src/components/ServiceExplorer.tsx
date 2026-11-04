@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ArtImage } from "@/components/art/ArtImage";
-import { art, type ArtKey } from "@/content/art";
+import type { ArtKey } from "@/content/art";
 import { categories, services, type CategorySlug, type Service } from "@/content/catalogue";
 
 const CATEGORY_ART: Record<CategorySlug, ArtKey> = {
@@ -124,7 +124,6 @@ export function ServiceExplorer({ headingLevel = "h3" }: { headingLevel?: "h2" |
                 </div>
               </div>
               <p data-preview-text className="t-h4 mt-6">{active.summary}</p>
-              <p data-preview-text className="caption muted mt-2">{art[activeArt].title} · {art[activeArt].credit}</p>
             </div>
           </div>
         </div>

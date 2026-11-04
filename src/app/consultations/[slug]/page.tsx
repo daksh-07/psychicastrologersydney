@@ -82,7 +82,6 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
                   priority
                   reveal={false}
                   heroArt
-                  numeral="Fig."
                   sizes="(min-width:1100px) 30vw, (min-width:768px) 60vw, 90vw"
                   className="mx-auto max-w-[420px]"
                 />
@@ -131,7 +130,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
             ))}
           </div>
           <p className="caption muted mt-14">
-            Also listed on the original site as: {s.covers.join(" · ")}
+            Also known as: {s.covers.join(" · ")}
           </p>
         </div>
       </section>

@@ -12,7 +12,7 @@ A contemporary editorial house for a traditional practice: a **museum catalogue 
 - **diyas**;
 - an original **aṣṭadala / rāśi-chakra** linework system.
 
-Every image is captioned like an exhibit (title, date, collection, licence). This makes the curation visible and keeps devotional art clearly separate from claims about the practitioner.
+Images appear without captions or source credits (client preference); provenance is kept in `docs/ASSET_CREDITS.md`. Devotional art is never presented as depicting the practitioner or his practice.
 
 ## Principles adapted from references
 | Reference | Principle adapted (not copied) |
@@ -48,7 +48,7 @@ Sections alternate light and dark deliberately, and each consultation category h
 - All fonts are SIL OFL 1.1, self-hosted as WOFF2, with licences in `src/fonts/`.
 
 ## Cultural guardrails
-- Deities appear only as historical artworks with museum captions. Captions describe the work, never the practitioner's personal worship.
+- Deities appear only as historical artworks. Nothing on the page describes the practitioner's personal worship.
 - Ganesha is captioned with the widely held meaning “remover of obstacles”, because the spiritual section discusses obstacles. That is cultural context, not a promise.
 - The rāśi wheel is labelled “Decorative — not anyone's birth chart”. Rulerships follow standard Jyotiṣa: Maṅgala for Meṣa/Vṛścika, Śukra for Vṛṣabha/Tulā, Budha for Mithuna/Kanyā, Candra for Karka, Sūrya for Siṃha, Guru for Dhanu/Mīna, Śani for Makara/Kumbha.
 - No voodoo, tarot, crystal-ball, glowing-orb or “spell” imagery, which was common on the original banners.
@@ -57,6 +57,6 @@ Sections alternate light and dark deliberately, and each consultation category h
 1. **Arch frames:** temple-arch masks on key artworks.
 2. **Rāśi Chakra:** an interactive wheel (see MOTION_SPEC).
 3. **Aṣṭadala ornament:** an original eight-petal lotus with a 12-fold division that rotates slowly behind heroes and CTAs.
-4. **Numbered narrative:** roman numerals I–VIII down the homepage, and *Fig.* numbers on artworks.
+4. **Numbered narrative:** roman numerals I–VIII down the homepage.
 5. **Marquee ticker:** all sixteen consultation names in italic serif.
 6. **Footer wordmark band:** “Thulasidas · ज्योतिष” drifting with scroll.

@@ -2,7 +2,7 @@
 
 Checked 4 November 2026 (Sydney). Every file was downloaded once from the original host's own image service (Cleveland Museum of Art open-access API, Wellcome IIIF, Unsplash image CDN) after its licence was confirmed on the asset page or API record. Files were cropped and re-encoded locally to AVIF and WebP at 480/800/1200/1800 px by `scripts/process-images.py` and are served from `public/art/`. No hotlinks, search thumbnails, watermarked previews, paid assets or competitor images are used. **No asset from the client's current website is reused** (see “Client imagery” below).
 
-Every image also has a visible credit on the site: in its caption, and in the full list at `/privacy#credits`.
+**No captions, figure labels or source credits are shown on the website** (client request). This is permitted: CC0, the Public Domain Mark and the Unsplash License do not require attribution. Provenance is recorded here only. Captions in the tables below are internal notes, and alt text remains for accessibility.
 
 ## Paintings and manuscripts (public domain / CC0)
 
@@ -49,5 +49,5 @@ All four asset pages state “Free to use under the Unsplash License” and are 
 
 ## Original work
 - Rāśi Chakra, aṣṭadala ornament and all linework: original SVG authored for this project.
-- OG/Twitter card (`src/app/opengraph-image.png`): composed from local fonts and the CC0 hero painting by `scripts/render-og.mjs`.
+- OG/Twitter card (`src/app/opengraph-image.png`): composed from local fonts and the CC0 hero painting by `scripts/render-og.mjs`, with no source line.
 - Fonts, all SIL Open Font License 1.1 (licence files in `src/fonts/`): Cormorant Garamond, Manrope and Tiro Devanagari Sanskrit.
